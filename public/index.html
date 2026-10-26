@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CipherX – Secure File Encryption and Decryption Tool</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600&family=Inter:wght@400;500&display=swap">
+<style>
+:root{--bg:#f3f5f2;--card:#fff;--ink:#14201b;--mute:#5b6a63;--line:#cfd8d2;--acc:#0f5c4a;--accink:#fff;--err:#a3261b;--ok:#0f6b3a}
+@media (prefers-color-scheme:dark){:root{--bg:#0e1512;--card:#162019;--ink:#e6efe9;--mute:#93a39a;--line:#2b3a31;--acc:#5fd1a8;--accink:#06261b;--err:#ff8a7d;--ok:#6fe0a0}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Inter,system-ui,sans-serif;display:grid;place-items:center;min-height:100vh;padding:24px}
+main{width:100%;max-width:520px}
+h1{font:600 2.6rem/1 Fraunces,Georgia,serif;margin:0 0 6px;letter-spacing:-.02em}
+.sub{color:var(--mute);margin:0 0 24px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:22px}
+label{display:block;font-weight:500;margin:0 0 6px}
+input[type=password],input[type=file]{width:100%;padding:10px;border:1px solid var(--line);border-radius:6px;background:transparent;color:var(--ink);font:inherit;margin-bottom:16px}
+.row{display:flex;gap:10px}
+button{flex:1;padding:11px;border-radius:6px;font:500 1rem Inter,sans-serif;cursor:pointer;border:1px solid var(--acc)}
+#enc{background:var(--acc);color:var(--accink)}#dec{background:transparent;color:var(--acc)}
+button:disabled{opacity:.5;cursor:wait}
+:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+#msg{min-height:1.5em;margin:16px 0 0;font-weight:500}.err{color:var(--err)}.ok{color:var(--ok)}
+small{display:block;color:var(--mute);margin-top:18px}
+</style>
+</head>
+<body>
+<main>
+<h1>CipherX</h1>
+<p class="sub">Lock a file with a password, or unlock one you locked earlier.</p>
+<div class="card">
+<label for="f">File (up to 4 MB)</label>
+<input id="f" type="file">
+<label for="p">Password</label>
+<input id="p" type="password" autocomplete="off">
+<div class="row"><button id="enc">Encrypt file</button><button id="dec">Decrypt file</button></div>
+<p id="msg" role="status"></p>
+</div>
+<small>AES-256-GCM with a PBKDF2-SHA256 key derived from your password. Files are processed in memory and never stored. Lost passwords cannot be recovered.</small>
+</main>
+<script>
+const $=id=>document.getElementById(id),msg=$('msg');
+async function run(mode){
+  const f=$('f').files[0];
+  msg.className='';msg.textContent='';
+  if(!f){msg.className='err';msg.textContent='Choose a file first.';return}
+  if(!$('p').value){msg.className='err';msg.textContent='Enter a password.';return}
+  const fd=new FormData();fd.append('file',f);fd.append('password',$('p').value);
+  $('enc').disabled=$('dec').disabled=true;msg.textContent='Working…';
+  try{
+    const r=await fetch('/api/'+mode,{method:'POST',body:fd});
+    if(!r.ok){let e='Something went wrong.';try{e=(await r.json()).error}catch{}throw new Error(e)}
+    const name=r.headers.get('X-Filename')||'output',url=URL.createObjectURL(await r.blob());
+    const a=document.createElement('a');a.href=url;a.download=name;a.click();URL.revokeObjectURL(url);
+    msg.className='ok';msg.textContent=(mode==='encrypt'?'Encrypted':'Decrypted')+': '+name;
+  }catch(e){msg.className='err';msg.textContent=e.message}
+  $('enc').disabled=$('dec').disabled=false;
+}
+$('enc').onclick=()=>run('encrypt');$('dec').onclick=()=>run('decrypt');
+</script>
+</body>
+</html>
