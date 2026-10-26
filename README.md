@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # CipherX – Secure File Encryption and Decryption Tool
 
 B.Tech CSE mini project (Lloyd Institute of Engineering & Technology, AKTU).
@@ -28,3 +29,6 @@ python cipherx_desktop.py          # desktop app
 2. On vercel.com choose **Add New → Project**, import the repo, keep the defaults, click **Deploy**.
 
 Limits: Vercel allows ~4.5 MB per request, so the web version accepts files up to 4 MB. Use the desktop app for larger files.
+=======
+# cipherx
+>>>>>>> 0e334ff2570de56f2639354085b5daf00f56e4c2
