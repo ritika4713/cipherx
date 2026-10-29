@@ -30,10 +30,11 @@ def _handle(fn, out_name):
 @app.post("/", defaults={"path": ""})
 @app.post("/<path:path>")
 def dispatch(path):
-    # Vercel's rewrite may change the path Flask sees, so match on the ending only.
-    if path.endswith("encrypt"):
+    # On Vercel the rewrite hides the original path, so the action arrives as ?action=...
+    action = request.args.get("action") or path
+    if action.endswith("encrypt"):
         return _handle(encrypt_bytes, lambda n: n + EXT)
-    if path.endswith("decrypt"):
+    if action.endswith("decrypt"):
         return _handle(decrypt_bytes, lambda n: n[:-len(EXT)] if n.endswith(EXT) else n + ".decrypted")
     return jsonify(error="Unknown action."), 404
 
