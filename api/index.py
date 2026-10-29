@@ -1,6 +1,8 @@
 import io
 import os
+import sys
 from flask import Flask, request, send_file, jsonify
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from cipherx_core import CipherXError, EXT, encrypt_bytes, decrypt_bytes
 
 app = Flask(__name__)
