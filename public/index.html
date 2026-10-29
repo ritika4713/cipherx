@@ -6,29 +6,36 @@
 <title>CipherX – Secure File Encryption and Decryption Tool</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600&family=Inter:wght@400;500&display=swap">
 <style>
-:root{--bg:#f3f5f2;--card:#fff;--ink:#14201b;--mute:#5b6a63;--line:#cfd8d2;--acc:#0f5c4a;--accink:#fff;--err:#a3261b;--ok:#0f6b3a}
-@media (prefers-color-scheme:dark){:root{--bg:#0e1512;--card:#162019;--ink:#e6efe9;--mute:#93a39a;--line:#2b3a31;--acc:#5fd1a8;--accink:#06261b;--err:#ff8a7d;--ok:#6fe0a0}}
+:root{--bg:#120826;--card:rgba(32,16,64,.72);--ink:#f4ecff;--mute:#bba6e0;--line:#5b3a99;--acc:#a66cff;--acc2:#e0b3ff;--accink:#14052b;--err:#ff8fb1;--ok:#b8f5d0}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Inter,system-ui,sans-serif;display:grid;place-items:center;min-height:100vh;padding:24px}
-main{width:100%;max-width:520px}
-h1{font:600 2.6rem/1 Fraunces,Georgia,serif;margin:0 0 6px;letter-spacing:-.02em}
+body{margin:0;color:var(--ink);font:16px/1.55 Inter,system-ui,sans-serif;display:grid;place-items:center;min-height:100vh;padding:24px;
+background:radial-gradient(circle at 20% 10%,#4a1d96 0,transparent 45%),radial-gradient(circle at 85% 90%,#7b2cbf 0,transparent 40%),var(--bg);background-attachment:fixed}
+main{width:100%;max-width:540px;text-align:center}
+.stars{letter-spacing:.5em;color:var(--acc2);font-size:1rem;text-shadow:0 0 10px var(--acc);margin-bottom:6px}
+h1{font:600 3rem/1 Fraunces,Georgia,serif;margin:0 0 6px;letter-spacing:-.02em;background:linear-gradient(90deg,#e0b3ff,#a66cff,#f5d0ff);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 14px rgba(166,108,255,.55))}
+.tag{color:var(--acc2);font-weight:500;margin:0 0 4px}
 .sub{color:var(--mute);margin:0 0 24px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:22px}
+.card{text-align:left;background:var(--card);backdrop-filter:blur(10px);border:1px solid var(--line);border-radius:18px;padding:24px;box-shadow:0 0 40px rgba(123,44,191,.45)}
 label{display:block;font-weight:500;margin:0 0 6px}
-input[type=password],input[type=file]{width:100%;padding:10px;border:1px solid var(--line);border-radius:6px;background:transparent;color:var(--ink);font:inherit;margin-bottom:16px}
+input[type=password],input[type=file]{width:100%;padding:11px;border:1px solid var(--line);border-radius:10px;background:rgba(18,8,38,.6);color:var(--ink);font:inherit;margin-bottom:16px}
+input[type=file]::file-selector-button{background:var(--acc);color:var(--accink);border:0;border-radius:8px;padding:6px 12px;margin-right:10px;font:inherit;cursor:pointer}
 .row{display:flex;gap:10px}
-button{flex:1;padding:11px;border-radius:6px;font:500 1rem Inter,sans-serif;cursor:pointer;border:1px solid var(--acc)}
-#enc{background:var(--acc);color:var(--accink)}#dec{background:transparent;color:var(--acc)}
+button{flex:1;padding:12px;border-radius:999px;font:600 1rem Inter,sans-serif;cursor:pointer;border:1px solid var(--acc);transition:transform .15s,box-shadow .15s}
+button:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 0 18px var(--acc)}
+#enc{background:linear-gradient(90deg,#7b2cbf,#a66cff);color:#fff}#dec{background:transparent;color:var(--acc2)}
 button:disabled{opacity:.5;cursor:wait}
-:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+:focus-visible{outline:3px solid var(--acc2);outline-offset:2px}
 #msg{min-height:1.5em;margin:16px 0 0;font-weight:500}.err{color:var(--err)}.ok{color:var(--ok)}
 small{display:block;color:var(--mute);margin-top:18px}
+.foot{margin-top:10px;color:var(--acc2);font-weight:500}
 </style>
 </head>
 <body>
 <main>
+<div class="stars" aria-hidden="true">★ ★ ★ ★ ★ ★ ★</div>
 <h1>CipherX</h1>
-<p class="sub">Lock a file with a password, or unlock one you locked earlier.</p>
+<p class="tag">ARMY Edition 💜</p>
+<p class="sub">Keep your files as safe as the ARMY bond. Lock a file with a password, or unlock one you locked earlier.</p>
 <div class="card">
 <label for="f">File (up to 100 MB)</label>
 <input id="f" type="file">
@@ -38,6 +45,7 @@ small{display:block;color:var(--mute);margin-top:18px}
 <p id="msg" role="status"></p>
 </div>
 <small>AES-256-GCM with a PBKDF2-SHA256 key derived from your password. Files are processed in memory and never stored. Lost passwords cannot be recovered.</small>
+<p class="foot">Borahae 💜 — I purple you</p>
 </main>
 <script>
 const $=id=>document.getElementById(id),msg=$('msg');
