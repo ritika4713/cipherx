@@ -35,8 +35,8 @@ main{
   background:var(--sheet);border:2px solid var(--green);outline:1px solid var(--green);outline-offset:6px;
   box-shadow:0 18px 40px -18px rgba(11,31,26,.35);
 }
-.rosette{position:absolute;right:-96px;top:-96px;width:260px;height:260px;pointer-events:none;z-index:0;animation:turn 120s linear infinite}
-.rosette path{fill:none;stroke:var(--green);stroke-width:.6;opacity:.55}
+.rosette{position:absolute;right:-70px;top:-70px;width:260px;height:260px;pointer-events:none;z-index:0;animation:turn 120s linear infinite}
+.rosette path{fill:none;stroke:var(--green);stroke-width:.7;opacity:.8}
 .rosette path+path{stroke:var(--bronze)}
 main.busy .rosette{animation-duration:6s}
 @keyframes turn{to{transform:rotate(360deg)}}
@@ -44,13 +44,13 @@ main>*:not(.rosette){position:relative;z-index:1}
 
 .band{
   display:flex;flex-wrap:wrap;justify-content:space-between;column-gap:14px;height:calc(1.6em + 8px);
-  margin:0 0 26px;padding:3px 0;border-block:1px solid var(--green);overflow:hidden;background:var(--sheet);
+  margin:18px 0 0;padding:3px 0;border-block:1px solid var(--green);overflow:hidden;
   font-size:10px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;line-height:1.6;color:var(--green);opacity:.75;
   user-select:none;
 }
 .band span{white-space:nowrap}
 h1{margin:0;font-size:2.75rem;line-height:1;font-weight:700;letter-spacing:-.03em}
-.sub{margin:10px 0 28px;max-width:30ch;color:var(--mute);text-wrap:balance}
+.sub{margin:12px 0 28px;max-width:30ch;color:var(--mute);text-wrap:balance}
 
 label{display:block;margin:0 0 6px;font-size:.72rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase}
 .hint{display:block;margin:-2px 0 8px;font-size:.82rem;color:var(--mute)}
@@ -74,13 +74,14 @@ button{
 #enc:hover:not(:disabled){transform:translateY(-1px)}
 button:disabled{opacity:.55;cursor:progress}
 
-#msg{min-height:1.6em;margin:18px 0 0;font-weight:500}
+#msg{min-height:1.6em;margin:18px 0 0;font-weight:500;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+#msg:not(:empty){padding-top:12px;border-top:1px solid var(--green)}
 .err{color:var(--err)}.ok{color:var(--ok)}
 small{display:block;margin-top:22px;padding-top:14px;border-top:1px solid var(--green);font-size:.8rem;line-height:1.55;color:var(--mute)}
 
 @media (max-width:480px){
   main{padding:24px 20px}
-  .rosette{width:180px;height:180px;right:-66px;top:-66px}
+  .rosette{width:180px;height:180px;right:-50px;top:-50px}
   h1{font-size:2.25rem}
   .row{flex-direction:column}
 }
@@ -90,7 +91,7 @@ small{display:block;margin-top:22px;padding-top:14px;border-top:1px solid var(--
 <body>
 <main id="sheet">
 <svg class="rosette" id="rosette" viewBox="-130 -130 260 260" aria-hidden="true"><path id="r1"/><path id="r2"/></svg>
-<div class="band" aria-hidden="true"><span>CipherX</span><span>AES-256-GCM</span><span>PBKDF2-SHA256</span><span>Never stored</span></div>
+
 <h1>CipherX</h1>
 <p class="sub">Lock a file with a password, or unlock one you locked earlier.</p>
 <label for="f">File</label>
@@ -101,6 +102,7 @@ small{display:block;margin-top:22px;padding-top:14px;border-top:1px solid var(--
 <div class="row"><button id="enc">Encrypt file</button><button id="dec">Decrypt file</button></div>
 <p id="msg" role="status" aria-live="polite"></p>
 <small>AES-256-GCM with a PBKDF2-SHA256 key derived from your password. Files are processed in memory and never stored. Lost passwords cannot be recovered.</small>
+<div class="band" aria-hidden="true"><span>AES-256-GCM</span><span>PBKDF2-SHA256</span><span>Never stored</span></div>
 </main>
 <script>
 const $=id=>document.getElementById(id),msg=$('msg'),sheet=$('sheet');
