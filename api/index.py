@@ -1,9 +1,11 @@
 import io
+import os
 from flask import Flask, request, send_file, jsonify
 from cipherx_core import CipherXError, EXT, encrypt_bytes, decrypt_bytes
 
 app = Flask(__name__)
-app.config["MAX_CONTENT_LENGTH"] = 4 * 1024 * 1024  # Vercel request limit is ~4.5 MB
+MAX_MB = int(os.environ.get("MAX_UPLOAD_MB", "100"))  # note: Vercel itself caps requests at ~4.5 MB
+app.config["MAX_CONTENT_LENGTH"] = MAX_MB * 1024 * 1024
 
 
 def _handle(fn, out_name):
@@ -35,4 +37,4 @@ def decrypt():
 
 @app.errorhandler(413)
 def too_big(_):
-    return jsonify(error="File is larger than 4 MB. Use the desktop version for bigger files."), 413
+    return jsonify(error=f"File is larger than {MAX_MB} MB."), 413
