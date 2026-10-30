@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: cipherx
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn --chdir api index:app --bind 0.0.0.0:$PORT --timeout 120
+    envVars:
+      - key: MAX_UPLOAD_MB
+        value: "100"

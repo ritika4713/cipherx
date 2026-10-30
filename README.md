@@ -28,7 +28,13 @@ python cipherx_desktop.py          # desktop app
 1. Push this folder to a GitHub repository.
 2. On vercel.com choose **Add New → Project**, import the repo, keep the defaults, click **Deploy**.
 
-Limits: Vercel allows ~4.5 MB per request, so the web version accepts files up to 4 MB. Use the desktop app for larger files.
+Limits: Vercel allows ~4.5 MB per request, so the Vercel web version accepts files up to 4 MB.
+
+## Deploy with a 100 MB limit (Render)
+1. On render.com choose **New → Blueprint**, pick this repo; `render.yaml` configures the service.
+2. The site then serves the page and API together and accepts files up to 100 MB (`MAX_UPLOAD_MB`).
+
+Locally: `gunicorn --chdir api index:app` (or `python api/index.py` flow via any WSGI server) serves everything at http://127.0.0.1:8000.
 =======
 # cipherx
 >>>>>>> 0e334ff2570de56f2639354085b5daf00f56e4c2

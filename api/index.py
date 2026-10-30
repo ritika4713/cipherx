@@ -1,9 +1,11 @@
 import io
 import os
 import sys
-from flask import Flask, request, send_file, jsonify
+from flask import Flask, request, send_file, send_from_directory, jsonify
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from cipherx_core import CipherXError, EXT, encrypt_bytes, decrypt_bytes
+
+PUBLIC_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "public")
 
 app = Flask(__name__)
 MAX_MB = int(os.environ.get("MAX_UPLOAD_MB", "100"))  # note: Vercel itself caps requests at ~4.5 MB
@@ -25,6 +27,12 @@ def _handle(fn, out_name):
     resp.headers["Access-Control-Expose-Headers"] = "X-Filename"
     resp.headers["Cache-Control"] = "no-store"
     return resp
+
+
+@app.get("/")
+def home():
+    # Lets a non-Vercel host (Render, Railway, local) serve the page and API together.
+    return send_from_directory(PUBLIC_DIR, "index.html")
 
 
 @app.post("/", defaults={"path": ""})
